@@ -15,15 +15,11 @@ label is not graded.
 
 **Pull request**
 
-[Link to the pull request you opened. It must be the pull request's own page on the Path
-Review repo, not your fork's branch page.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/pull/157
 
 **Branch**
 
-[The name of the branch the pull request comes from, exactly as it appears in your fork.
-The naming shape is a type prefix, then the issue number, then a short description. **The
-issue number in the branch name must be the number of the issue the pull request fixes** —
-a name carrying any other number does not satisfy this field.]
+fix/68-bm25-empty-index
 
 ## Eval iterations
 
@@ -32,28 +28,21 @@ fields.
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+19/20
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+For `pkg-20`, my rubric decided `accept` but the gold label was `reject`. My rubric evaluated it this way because my "Standards and Comms" check successfully verified that the AI disclosure and basic template sections were filled out, but the check was not granular enough to catch the specific, subtle contributing policy violation that this package tested for the `standards-wall` category.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/pr-precheck/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+"Test Evidence | The test evidence read against the plan's test plan and the repo's checks | It shows the before/after results on an observable behavior AND shows the outcomes of the repo's required automated checks (make test-unit, etc.). | required" 
+
+I wrote it this way to explicitly catch untestable claims. Without requiring observable terminal output, the grader might accept a PR where the author just vaguely claims "tests pass," leaving the maintainer without actual proof.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+By making the "Test Evidence" check require observable before/after terminal output, I give up the ability to accept a PR where the author genuinely did the testing but only summarized the results in prose. It will unconditionally hold perfectly working code just because the formatting of the proof is lazy.
 
 ---
 
