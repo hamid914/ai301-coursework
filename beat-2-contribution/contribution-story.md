@@ -66,11 +66,17 @@ tuned the search strategy filters to prioritize active, unassigned repositories
 and added a deduplication rule to ensure candidate variety before final rubric
 grading.
 
-**Unit 6: [one line on the tool work]**
+### Unit 6: Automated PreToolUse Voice Guard and Scoped Repository Memory
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+I deployed voice-guard as a Claude Code PreToolUse hook running check_voice.py
+against my canonical voice-guide.md, ensuring outgoing GitHub comments satisfy
+tone, scope, and timeline constraints. Early manual checks intercepted an
+initial claim draft for using vague delivery estimates rather than concrete
+investigation steps and missing the repository's mandatory `/assign` command. I
+resolved this by enforcing explicit timeline wording and required bot commands
+in claim-draft.md, while adding CLAUDE.local.md excluded via .git/info/exclude
+to preserve test runner conventions across sessions without polluting the
+repository diff.
 
 **Unit 7: [one line on the tool work]**
 
