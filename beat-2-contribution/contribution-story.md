@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Add unit tests for the Duration class
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -7,11 +7,10 @@ the repository is not read. **Keep every section header below under its exact na
 format criteria grade exactly that. Your course repo link is the whole submission: no tool
 files and no evidence uploads are part of Assignment 5.
 
-**Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Contribution Number:** 1
+**Student:** Hamid Rouhani
+**GitHub Username:** hamid914
+**Issue:** https://github.com/hiero-ledger/hiero-sdk-python/issues/2557
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -87,24 +86,33 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I selected this issue from the AI301 Issue Selection site after screening
+candidates across Python repositories. My scout evaluated this ticket alongside
+`emfcamp/Website#1075` and `Snapchat/GiGL#169`. Using the patched scope rubric,
+the scout issued an `accept` verdict with a difficulty rating of
+`straightforward`. It confirmed the repository is actively maintained (commits
+within 24 hours), unassigned after stale claimants were cycled out by automated
+maintenance bots, and strictly bounded to adding unit tests without touching
+production code.
+
+This issue fits my background well because it focuses on Python test suite
+development (`pytest`) and verifying class contracts without introducing domain
+dependencies or non-deterministic behavior. I want to contribute to an active
+open-source SDK while working through its testing infrastructure, dataclass
+validations, and pre-commit contribution standards (such as GPG/DCO signing). 
+
+The scout accurately distinguished this bounded task from contested or tracking
+issues, though manual verification remained necessary to identify the
+repository's explicit requirement for the `/assign` command in claim comments.
+
+Claim comment: https://github.com/hiero-ledger/hiero-sdk-python/issues/2557#issuecomment-6742162800
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout (search strategy, patched rubric),
+- What it produced: An accept verdict rating the issue straightforward, confirming active maintainer commits, unassigned status, and test-only scope.
+- Difficulties: The scout's initial binary scope check was too rigid for wild repositories, and broad ranking initially allowed contested issues through.
+- What changed: Patched the rubric with the scope-feasible check and three-tier difficulty rating (straightforward, moderate, ambitious).
 
 ---
 
