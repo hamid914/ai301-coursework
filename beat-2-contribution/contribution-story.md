@@ -55,10 +55,17 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+### Unit 5: Upgrading Issue-Select to Issue-Scout and Building GitHub Search Funnels
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I expanded the unit 1 issue-select skill into issue-scout by adding live GitHub
+CLI search queries filtered by language, open state, and community engagement
+signals. During initial test scans across wide queries, the ranking stage
+repeatedly clustered multiple sub-issues from the same repository and surfaced
+several low-star solo projects, while the rubric successfully intercepted and
+rejected heavily contested tickets with abandoned attempts. To address this, I
+tuned the search strategy filters to prioritize active, unassigned repositories
+and added a deduplication rule to ensure candidate variety before final rubric
+grading.
 
 **Unit 6: [one line on the tool work]**
 
