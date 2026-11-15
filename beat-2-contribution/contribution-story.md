@@ -254,7 +254,8 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 
 **Maintainer Feedback:**
 
-- 2026-11-15: none yet
+- 2026-11-15: CodeRabbit bot left two actionable inline comments.
+- 2026-11-15: Holding off on code changes until a human maintainer reviews, as advised by my PR monitor.
 
 **Status:** Awaiting review
 
