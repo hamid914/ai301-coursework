@@ -222,32 +222,27 @@ I will create `tests/unit/duration_test.py` to thoroughly test the `Duration` cl
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+I will run `uv run pytest tests/unit/duration_test.py` to verify my new test suite passes. I will then run the full unit test suite via `uv run pytest tests/unit/` and the repository's linting hooks via `uv run pre-commit run --all-files` to prove my additions do not break existing coverage or formatting rules.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: pytest and pre-commit
+- What it produced: Terminal output proving 11 passed tests in `duration_test.py` and successful formatting checks across the repository.
+- Difficulties: The test runner initially crashed during collection (`ModuleNotFoundError`) because the HAPI protobuf files were not compiled.
+- What changed: I executed `generate_proto.py` via `uv` to download and compile the Hedera protobufs locally, enabling pytest to run successfully.
 
 ---
 
 ## Implementation Notes
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
+**2026-11-14**
+Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created branch `fix/2557-duration-tests`. Implemented `tests/unit/duration_test.py` with 11 tests covering initialization, `__eq__` false-conditions, and protobuf serialization including the `ValueError` guard.
 
-**[Date]**
-
-[Entry]
-
-**[Date]**
-
-[Entry]
+**Toolkit**
+- Tool: claude code (implementation)
+- What it produced: The `duration_test.py` file, generated from the approved `plan.md`.
+- Difficulties: The initial Claude-generated file imported `Duration` using a lowercase filename (`duration.py`), which caused an import error on my local filesystem.
+- What changed: Claude corrected the import to use the exact PascalCase filename (`Duration.py`) identified during my reproduction phase.
 
 **Toolkit**
 
