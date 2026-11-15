@@ -11,7 +11,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Hamid Rouhani
 **GitHub Username:** hamid914
 **Issue:** https://github.com/hiero-ledger/hiero-sdk-python/issues/2557
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:** https://github.com/hiero-ledger/hiero-sdk-python/pull/2793
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -69,10 +69,9 @@ over 10 stars before grading against rubric.md.
 
 I deployed voice-guard as a Claude Code PreToolUse hook running check_voice.py against my canonical voice-guide.md, ensuring outgoing comments satisfy tone, scope, and timeline constraints. Early manual checks intercepted an initial claim draft for using vague delivery estimates rather than concrete investigation steps and missing the repository's mandatory `/assign` command. I resolved this by enforcing explicit timeline wording and required bot commands in claim-draft.md, while adding CLAUDE.local.md excluded via .git/info/exclude to preserve test runner conventions across sessions without polluting the repository diff.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Automated PR Gatekeeping and Manifest Checks**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+I installed the ship-gate hook and created a manifest to run `uv run pytest tests/unit/` and `uv run pre-commit run --all-files` on my branch before allowing a PR. During my first run, my `pr-precheck` skill intercepted the ship-gate because my test plan promised string representation tests, but my diff lacked `__str__` and `__repr__` tests. I patched my branch to include those two tests to restore plan fidelity, updated my test evidence, and the gate passed my branch.
 
 **Unit 8: [one line on the tool work]**
 
@@ -201,15 +200,17 @@ The `Duration` class in `src/hiero_sdk_python/Duration.py` lacks a dedicated uni
 
 **Proposed Solution**
 
-I will create `tests/unit/duration_test.py` to thoroughly test the `Duration` class. I will write test cases covering its initialization, property access (`seconds` and `nanos`), equality comparisons, string representation, and protobuf conversion methods (`to_proto` and `from_proto`). I will deliberately not alter any production code in `src/hiero_sdk_python/Duration.py`.
+I will create `tests/unit/duration_test.py` to thoroughly test the `Duration` class. I will write test cases covering its initialization, property access (`seconds`), equality comparisons (specifically ensuring `__eq__` returns `False` for non-Duration objects), string representation, and protobuf conversion methods (`_to_proto` and `_from_proto`, including pinning down the `ValueError` guard). I will deliberately not alter any production code.
 
 **Implementation Plan**
 
 1. Create the `tests/unit/duration_test.py` file.
 2. Import `Duration` and `pytest`.
-3. Add test functions for standard initialization and property access.
-4. Add test functions verifying serialization using `to_proto` and `from_proto`.
-5. Run `uv run pytest tests/unit/duration_test.py` to confirm the new suite passes.
+3. Add tests for standard initialization and property access (observing `assert Duration(seconds=5).seconds == 5`).
+4. Add tests for equality, specifically observing that `Duration(seconds=5) != "Not a Duration"` correctly evaluates to `True`.
+5. Add tests for string representation (`__str__` and `__repr__`).
+6. Add tests for `_to_proto` and `_from_proto`, specifically observing that `pytest.raises(ValueError)` triggers when `_from_proto` receives invalid input.
+7. Run `uv run pytest tests/unit/duration_test.py` to confirm the new test behaviors pass.
 
 **Toolkit**
 
@@ -227,7 +228,7 @@ I will run `uv run pytest tests/unit/duration_test.py` to verify my new test sui
 **Toolkit**
 
 - Tool: pytest and pre-commit
-- What it produced: Terminal output proving 11 passed tests in `duration_test.py` and successful formatting checks across the repository.
+- What it produced: Terminal output proving 13 passed tests in `duration_test.py` and successful formatting checks across the repository.
 - Difficulties: The test runner initially crashed during collection (`ModuleNotFoundError`) because the HAPI protobuf files were not compiled.
 - What changed: I executed `generate_proto.py` via `uv` to download and compile the Hedera protobufs locally, enabling pytest to run successfully.
 
@@ -236,7 +237,7 @@ I will run `uv run pytest tests/unit/duration_test.py` to verify my new test sui
 ## Implementation Notes
 
 **2026-11-14**
-Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created branch `fix/2557-duration-tests`. Implemented `tests/unit/duration_test.py` with 11 tests covering initialization, `__eq__` false-conditions, and protobuf serialization including the `ValueError` guard.
+Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created branch `fix/2557-duration-tests`. Implemented `tests/unit/duration_test.py` with 13 tests covering initialization, string representation, `__eq__` false-conditions, and protobuf serialization including the `ValueError` guard.
 
 **Toolkit**
 - Tool: claude code (implementation)
@@ -255,10 +256,9 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** https://github.com/hiero-ledger/hiero-sdk-python/pull/2793
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** Fixes #2557. Created `tests/unit/duration_test.py` to add dedicated unit test coverage for the `Duration` class. Verified standard initialization, the `seconds` property, equality behavior (including `__eq__` returning `False` for non-Duration objects), and protobuf serialization (`_to_proto` and `_from_proto`), including the `ValueError` guard. Included full before-and-after terminal evidence and a natural AI-assistance disclosure respecting the repository's bot policy.
 
 **Maintainer Feedback:**
 
@@ -266,16 +266,14 @@ adapts into it]
   state and costs you nothing]
 - [Date]: [how you addressed it]
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Awaiting review
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: ship-gate, voice-guard, and Claude Code (gh cli)
+- What it produced: An automated validation of the branch against my manifest and test plan, followed by the final PR submission to GitHub.
+- Difficulties: The ship-gate caught that the global `pytest` command failed due to missing dependencies, and the `pr-precheck` caught that my branch was missing the `__str__` tests promised in my plan. Later, the voice-guard blocked the PR creation because my draft evidence was stale (showing 11 dots in the full suite instead of the updated 13).
+- What changed: I scoped the manifest's test command to `tests/unit/`, added the missing string representation tests to my branch, and refreshed the full-suite test evidence to match the new 13-test count before the hooks allowed the PR to open.
 
 ---
 
