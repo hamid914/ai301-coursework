@@ -73,10 +73,9 @@ I deployed voice-guard as a Claude Code PreToolUse hook running check_voice.py a
 
 I installed the ship-gate hook and created a manifest to run `uv run pytest tests/unit/` and `uv run pre-commit run --all-files` on my branch before allowing a PR. During my first run, my `pr-precheck` skill intercepted the ship-gate because my test plan promised string representation tests, but my diff lacked `__str__` and `__repr__` tests. I patched my branch to include those two tests to restore plan fidelity, updated my test evidence, and the gate passed my branch.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Monitoring PR Status with PR-Monitor and Playbook**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+I installed the `pr-monitor` skill to track my open PR and drafted a `playbook.md` establishing a 7-day staleness threshold and direct response rules. Running `monitor.py --state` successfully read my PR's status, but since it was just opened, the monitor drafted a "note to wait" advising me to hold off on pinging the maintainers. I reviewed the drafted note and chose to hold my position without posting, keeping the thread clean while the repository's CI checks complete.
 
 ---
 
@@ -245,13 +244,6 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 - Difficulties: The initial Claude-generated file imported `Duration` using a lowercase filename (`duration.py`), which caused an import error on my local filesystem.
 - What changed: Claude corrected the import to use the exact PascalCase filename (`Duration.py`) identified during my reproduction phase.
 
-**Toolkit**
-
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
-
 ---
 
 ## Pull Request
@@ -262,9 +254,7 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- 2026-11-15: none yet
 
 **Status:** Awaiting review
 
@@ -281,25 +271,20 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+Mastering `uv` for Python dependency management and lockfile isolation; understanding Protocol Buffer compilation (`generate_proto.py`) within a large SDK; testing Python dataclasses and properties using `pytest`, including validating specific exceptions with `pytest.raises(ValueError)`.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+I overcame an initial `ModuleNotFoundError` during pytest collection by locating and executing the repository's HAPI protobuf compilation script to build missing dependencies. Later, I passed strict `ship-gate` requirements by recovering from a corrupted `pre-commit` hook cache and patching my branch to include `__str__` tests that were promised in my plan but missed in my initial implementation.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I would scope my test runner command (`uv run pytest tests/unit/`) earlier in the reproduction phase to avoid confusion from global test suites that inherently fail on `main` due to uninstalled optional extras (like Flask for the TCK suite).
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- Hiero SDK Python `CONTRIBUTING.md` for formatting and DCO sign-off rules.
+- CodeRabbit's plan comment on issue #2557 for scoping the required edge-case test validations.
+- Pytest documentation for the `pytest.raises` exception testing syntax.
