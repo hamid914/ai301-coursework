@@ -183,7 +183,7 @@ ERROR: file or directory not found: tests/unit/duration_test.py
 
 **Toolkit**
 
-- Tool: repro-check (wild scope)
+- Tool: repro-check (used locally to evaluate my drafted reproduction steps and claim comment against the wild scope rubric, ensuring I didn't promise fixed deadlines before assigning myself).
 - What it produced: An accept verdict on `claim-draft.md` and `repro-draft.md` for issue #2557.
 - Difficulties: The first claim draft was rejected by repro-check for promising deliverable deadlines instead of an investigation and omitting the repository's mandatory `/assign` trigger.
 - What changed: Updated the claim draft to use `/assign` and state concrete local test reproduction steps instead of promised completion dates.
@@ -213,7 +213,7 @@ I will create `tests/unit/duration_test.py` to thoroughly test the `Duration` cl
 
 **Toolkit**
 
-- Tool: plan-check (wild scope)
+- Tool: plan-check (used locally to evaluate plan.md against the repository's strict scope, ensuring I targeted the exact ValueError edge case mentioned in the issue without altering production code).
 - What it produced: An accept verdict on `plan.md` and `plan-comment.md`.
 - Difficulties: The first plan was rejected for misnaming methods (`to_proto` instead of `_to_proto`), hallucinating a `nanos` property, omitting specific edge-case validations requested by the issue, and using a generic "run the test suite" verification step. 
 - What changed: Updated the plan to use exact method names, test the specific `ValueError` and `__eq__` behaviors requested, and explicitly state the observable assertions the tests will make.
@@ -226,7 +226,7 @@ I will run `uv run pytest tests/unit/duration_test.py` to verify my new test sui
 
 **Toolkit**
 
-- Tool: pytest and pre-commit
+- Tool: pytest (used to execute duration_test.py and the global suite) and pre-commit (used to run the repository's linting and formatting hooks locally before pushing).
 - What it produced: Terminal output proving 13 passed tests in `duration_test.py` and successful formatting checks across the repository.
 - Difficulties: The test runner initially crashed during collection (`ModuleNotFoundError`) because the HAPI protobuf files were not compiled.
 - What changed: I executed `generate_proto.py` via `uv` to download and compile the Hedera protobufs locally, enabling pytest to run successfully.
@@ -235,8 +235,20 @@ I will run `uv run pytest tests/unit/duration_test.py` to verify my new test sui
 
 ## Implementation Notes
 
-**2026-11-14**
-Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created branch `fix/2557-duration-tests`. Implemented `tests/unit/duration_test.py` with 13 tests covering initialization, string representation, `__eq__` false-conditions, and protobuf serialization including the `ValueError` guard.
+**2026-11-14 10:00 AM**
+Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py` to resolve a `ModuleNotFoundError` during test collection. Created branch `fix/2557-duration-tests`.
+
+**2026-11-14 02:00 PM**
+Implemented the initial `tests/unit/duration_test.py` suite with 11 tests. While running local formatting, I encountered a corrupted `pre-commit` hook cache. I resolved this by clearing the cache (`pre-commit clean`) and letting `uv` reinstall the hooks.
+
+**2026-11-15 01:00 AM**
+Attempted to run `ship-gate`, but my `pr-precheck` script halted the process because my initial 11 tests completely missed the `__str__` and `__repr__` behaviors promised in my plan. I patched the branch to include these, bringing the target file's passing test count to 13.
+
+**2026-11-15 01:30 AM**
+During final PR evidence collection, my `voice-guard` caught that my full-suite test evidence still showed the stale 11 dots for `duration_test.py` out of the 3954 total tests, rather than the updated 13 dots. I re-ran the full suite (now showing 3956 total passed) and updated the PR description draft before successfully opening PR #2793.
+
+**2026-11-15 05:00 PM**
+The automated CodeRabbit bot and a human maintainer (`manishdait`) requested parameterized tests for additional non-integer inputs and explicit `isinstance` return type assertions. I applied `@pytest.mark.parametrize` to cover `5.5`, `None`, `[]`, and `{}`, and added the type check, successfully passing a 17-test local run. I pushed the updates and resolved the GitHub threads.
 
 **Toolkit**
 - Tool: claude code (implementation)
@@ -254,10 +266,11 @@ Generated `hiero_sdk_python.hapi` protobufs using `generate_proto.py`. Created b
 
 **Maintainer Feedback:**
 
-- 2026-11-15: CodeRabbit bot left two actionable inline comments.
-- 2026-11-15: Holding off on code changes until a human maintainer reviews, as advised by my PR monitor.
+- 2026-11-15: CodeRabbit bot left two actionable inline comments requesting parameterized invalid inputs and `isinstance` checks. 
+- 2026-11-15: Maintainer `manishdait` formally requested changes matching the bot's parameterization request.
+- 2026-11-15: I applied the requested parameterization and type checks, pushed the 17-test suite, and replied to the threads before re-requesting a review.
 
-**Status:** Awaiting review
+**Status:** Iterating
 
 **Toolkit**
 
