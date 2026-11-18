@@ -1,7 +1,7 @@
 # Adding Comprehensive Unit Tests for the Duration Class in Hiero SDK Python
 
 ## Overview
-I contributed to the open-source `hiero-sdk-python` library by adding a dedicated unit test suite for the `Duration` class. The class handles Protocol Buffer conversions and time representations but lacked test coverage. I wrote tests for initialization, equality, string representation, and serialization edge cases, isolating the scope to ensure no production code was altered. The pull request is open, has passed local automated checks, and is iterating on maintainer feedback. [PR #2793](https://github.com/hiero-ledger/hiero-sdk-python/pull/2793)
+I contributed to the open-source `hiero-sdk-python` library by adding a dedicated unit test suite for the `Duration` class. The class handles Protocol Buffer conversions and time representations but lacked test coverage. I wrote tests for initialization, equality, string representation, and serialization edge cases, isolating the scope to ensure no production code was altered. The pull request passed all checks with 100% coverage on the modified lines (+0.09% overall repository coverage) and was merged into `main` in commit `ee40221`. [PR #2793](https://github.com/hiero-ledger/hiero-sdk-python/pull/2793)
 
 ## What happened
 The contribution process started with successfully reproducing the gap in the repository. Running the test runner on the target file yielded an immediate failure:
@@ -36,6 +36,8 @@ tests/unit/duration_test.py .................                            [100%]
 
 ============================== 17 passed in 0.19s ==============================
 ```
+
+Codecov confirmed 100% coverage on the diff (+0.09% overall repository coverage), and after two branch syncs with `main`, `manishdait` approved and merged PR #2793 into `main` (`ee40221`).
 
 ## Limitations and what's next
 
